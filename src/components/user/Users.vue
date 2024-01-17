@@ -139,7 +139,6 @@ export default {
     // 点击按钮,添加新用户
     addUser () {
       this.$refs.addFormRef.validate(async valid => {
-        console.log(valid)
         if (!valid) return
         // 可以发起添加用户的网络请求
         const { data: res } = await this.$http.post('users', this.addForm)
