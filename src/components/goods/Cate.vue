@@ -69,9 +69,10 @@ export default {
     </el-breadcrumb>
     <!--卡片视图区域-->
     <el-card>
-      <el-button id="add-button" type="primary" @click="addDialogVisible = true">添加分类</el-button>
+      <el-button type="primary" @click="addDialogVisible = true">添加分类</el-button>
       <el-row></el-row>
-      <tree-table :selection-type="false" :expand-type="false" show-index index-text="#" border :show-row-hover="false"
+      <tree-table class="treeTable" :selection-type="false" :expand-type="false" show-index index-text="#" border
+                  :show-row-hover="false"
                   :data="cateList"
                   :columns="columns">
         <template slot="isok" slot-scope="scope">
@@ -88,12 +89,21 @@ export default {
           <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
         </template>
       </tree-table>
+      <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="queryInfo.pagenum"
+          :page-sizes="[5, 10, 20, 50]"
+          :page-size="queryInfo.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+      </el-pagination>
     </el-card>
   </div>
 </template>
 
 <style scoped lang="less">
-#add-button {
-  margin-bottom: 20px;
+.treeTable {
+  margin-top: 15px;
 }
 </style>
