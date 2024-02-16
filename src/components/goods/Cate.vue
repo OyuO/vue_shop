@@ -14,6 +14,16 @@ export default {
           label: '是否有效',
           type: 'template',
           template: 'isok'
+        },
+        {
+          label: '排序',
+          type: 'template',
+          template: 'order'
+        },
+        {
+          label: '操作',
+          type: 'template',
+          template: 'opt'
         }
       ],
       queryInfo: {
@@ -59,7 +69,7 @@ export default {
     </el-breadcrumb>
     <!--卡片视图区域-->
     <el-card>
-      <el-button type="primary" @click="addDialogVisible = true">添加分类</el-button>
+      <el-button id="add-button" type="primary" @click="addDialogVisible = true">添加分类</el-button>
       <el-row></el-row>
       <tree-table :selection-type="false" :expand-type="false" show-index index-text="#" border :show-row-hover="false"
                   :data="cateList"
@@ -68,13 +78,22 @@ export default {
           <i class="el-icon-success" v-if="scope.row.cat_deleted == false" style="color: lightgreen"></i>
           <i class="el-icon-error" v-if="scope.row.cat_deleted == true" style="color: red"></i>
         </template>
+        <template slot="order" slot-scope="scope">
+          <el-tag size="mini" v-if="scope.row.cat_level === 0">一级</el-tag>
+          <el-tag type="success" size="mini" v-else-if="scope.row.cat_level === 1">二级</el-tag>
+          <el-tag type="warning" size="mini" v-else-if="scope.row.cat_level === 2">三级</el-tag>
+        </template>
+        <template slot="opt" slot-scope="scope">
+          <el-button type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+        </template>
       </tree-table>
     </el-card>
   </div>
 </template>
 
 <style scoped lang="less">
-.el-button {
+#add-button {
   margin-bottom: 20px;
 }
 </style>
