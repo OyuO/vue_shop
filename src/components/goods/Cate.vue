@@ -3,7 +3,7 @@ export default {
   name: 'Cate',
   data () {
     return {
-      addDialogVisible: false,
+      addCateDialogVisible: false,
       cateList: [],
       columns: [
         {
@@ -31,7 +31,20 @@ export default {
         pagenum: 1,
         pagesize: 5
       },
-      total: 0
+      total: 0,
+      cateAddForm: {
+        name: '',
+        cat_pid: 0,
+        cat_level: 0
+      },
+      cateAddRules: {
+        name: [
+          {
+            required: true,
+            message: '请输入分类名称',
+            trigger: 'blur'
+          }]
+      }
     }
   },
   methods: {
@@ -51,6 +64,9 @@ export default {
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
       this.getCategories()
+    },
+    showAddCateDialog () {
+      this.addCateDialogVisible = true
     }
   },
   created () {
@@ -69,7 +85,7 @@ export default {
     </el-breadcrumb>
     <!--卡片视图区域-->
     <el-card>
-      <el-button type="primary" @click="addDialogVisible = true">添加分类</el-button>
+      <el-button type="primary" @click="showAddCateDialog">添加分类</el-button>
       <el-row></el-row>
       <tree-table class="treeTable" :selection-type="false" :expand-type="false" show-index index-text="#" border
                   :show-row-hover="false"
@@ -90,15 +106,28 @@ export default {
         </template>
       </tree-table>
       <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="queryInfo.pagenum"
-          :page-sizes="[5, 10, 20, 50]"
-          :page-size="queryInfo.pagesize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[5, 10, 20, 50]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
       </el-pagination>
     </el-card>
+    <el-dialog title="添加分类" :visible.sync="addCateDialogVisible" width="40%">
+      <el-form :rules="cateAddRules" ref="cateAddForm" :model="cateAddForm" label-width="100px">
+        <el-form-item label="分类名称: " prop="name">
+          <el-input v-model="cateAddForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="父级分类: ">
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addCateDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addCateDialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
